@@ -9,13 +9,23 @@ white = (255, 255, 255)
 red = (255, 0, 0)
 
 
+class Bonus:
+
+    strs = ["", ]
+
+    def __init__(self, bonus):
+        self.bonus = bonus
+        self.str = strs[bonus]
+
+
 class Tile:
 
-    BONUS_CORDS = [[0, 0]]
+    BONUSES = []
 
-    def __init__(self, cords, bonus):
+    def __init__(self, cords, bonus=0):
         self.cords = cords
-        self.letter = None
+        self.bonus = bonus
+
 
 
 class Board:
