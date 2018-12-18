@@ -1,4 +1,17 @@
 import pygame
+
+def read_words():
+    to_return = []
+    try:
+        file_object = open("words", "r")
+        string = file_object.read()
+        for word in string.split("\n"):
+            to_return.append(word)
+    except:
+        print(":(")
+    return to_return
+
+
 pygame.init()
 
 display_width = 800
@@ -8,13 +21,15 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
-            #   Up     Down      Left    Right
-directions = [[0, 1], [0, -1], [-1, 0], [1, 0]]
-
+#               Up     Down      Left    Right
+# directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]     # Rows and cols are weird
+#              Down    Right
+directions = [[1, 0], [0, 1]]
+words = read_words()
 # The below board matches with a picture at
 # https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiukpWtt6ffAhXtlOAKHRfzAWkQjRx6BAgBEAU&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FScrabble&psig=AOvVaw20SSGA8_KK0jKP66a4O2It&ust=1545155611561682
 #                      A  B  C  D  E  F  G  H  I  J  K  L  M  N  O
-BOARD_TILE_BONUSES = [[3, 3, 3, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
+BOARD_TILE_BONUSES = [[3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
                       [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 2
                       [0, 0, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0],    # 3
                       [2, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 2],    # 4
@@ -65,20 +80,27 @@ class Board:
 
     def place_word(self, string, first_letter_cords, direction):
         is_valid = True
-        end_cords = first_letter_cords.copy()
-        for x in range(len(string)):
-            end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
-            tile = self.board[end_cords[0]][end_cords[1]]
-            if end_cords[1] < 0 or end_cords[1] == len(self.board[0]) or \
-                    not tile.letter == "" or \
-                    end_cords[0] < 0 or end_cords[0] == len(self.board):
-                is_valid = False
-                break
-        if is_valid:
+        if string in words:
             end_cords = first_letter_cords.copy()
-            for s in string:
-                self.board[end_cords[0]][end_cords[1]].place_letter(s.lower())
+            for x in range(len(string)):
+
                 end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
+                if end_cords[1] < 0 or end_cords[1] == len(self.board) or \
+                        end_cords[0] < 0 or end_cords[0] == len(self.board[0]):
+                    print(end_cords)
+                    is_valid = False
+                    break
+                tile = self.board[end_cords[0]][end_cords[1]]
+                if not tile.letter == "":
+                    is_valid = False
+                    break
+            if is_valid:
+                end_cords = first_letter_cords.copy()
+                for s in string:
+                    self.board[end_cords[0]][end_cords[1]].place_letter(s.lower())
+                    end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
+        else:
+            is_valid = False
         return is_valid
 
     def to_string_bonuses(self):
@@ -100,5 +122,5 @@ class Board:
 
 # # # # # # # # # TESTING CODE START # # # # # # # # #
 b = Board()
-b.place_word("Sit", [0, 0], 3)
+b.place_word("Sit", [14, 0], 0)
 print(b.to_string_strs())
