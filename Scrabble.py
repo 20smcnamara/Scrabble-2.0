@@ -45,7 +45,7 @@ class Tile:
 
 class Board:
 
-    def __init(self):
+    def __init__(self):
         self.board = []
         for col in range(10):
             self.board.append([])
