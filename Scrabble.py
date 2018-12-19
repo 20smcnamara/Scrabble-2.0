@@ -19,8 +19,6 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
-#               Up     Down      Left    Right
-# directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]     # Rows and cols are weird
 #              Down    Right
 directions = [[1, 0], [0, 1]]
 words = read_words()
@@ -117,6 +115,25 @@ class Board:
             to_return += "\n"
         return to_return
 
+
+class ScrabbleGame:
+
+    def __init__(self):
+        self.board = Board()
+        self.players = [Player(), Player(), Player(), Player()]
+        self.x = 0
+
+    def draw(self):
+        # Some code
+        self.x = 0
+
+    def get_touch(self):
+        # Some code
+        self.x = 0
+
+    def validate_touch(self):
+        # Some code
+        self.x = 0
 
 # # # # # # # # # TESTING CODE START # # # # # # # # #
 b = Board()
