@@ -1,6 +1,6 @@
 import pygame
 import random
-
+import time
 
 def read_words():
     to_return = []
@@ -15,23 +15,42 @@ pygame.init()
 
 display_width = 800
 display_height = 800
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+light_blue = (33, 164, 215)
+light_green = (120, 223, 17)
 
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Scrabble')
 Clock = pygame.time.Clock()
 Clock.tick(60)
+game_display.fill(white)
 pygame.display.update()
 game_exit = False
 
+def text_objects(text, font):
+    text_surface = font.render(text, True, black)
+    return text_surface, text_surface.get_rect()
+
+def message_display(text):
+    large_text = pygame.font.Font('freesansbold.ttf', 75)
+    text_surf, text_rect = text_objects(text, large_text)
+    text_rect.center = ((display_width/2), (display_height/2))
+    game_display.blit(text_surf, text_rect)
+
+    pygame.display.update()
+    time.sleep(5)
+    game_display.fill(white)
+    pygame.display.update()
+
+message_display("you got scrabbled")
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
 
-black = (0, 0, 0)
-white = (255, 255, 255)
-red = (255, 0, 0)
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
