@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 def read_words():
@@ -19,6 +20,8 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
+LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+           "W", "X", "Y", "Z"]
 #              Down    Right
 directions = [[1, 0], [0, 1]]
 words = read_words()
@@ -114,6 +117,14 @@ class Board:
                 to_return += row.letter
             to_return += "\n"
         return to_return
+
+
+class Player:
+
+    def __init__(self):
+        self.letters = []
+        for x in range(7):
+            self.letters.append(random.choice(LETTERS))
 
 
 class ScrabbleGame:
