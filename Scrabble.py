@@ -138,6 +138,15 @@ class Player:
         self.letters = []
         for x in range(7):
             self.letters.append(random.choice(LETTERS))
+        self.x = 0
+
+    def get_touch(self):
+        # Some code
+        self.x = 0
+
+    def draw_letters(self):
+        # Some code
+        self.x = 0
 
 
 class ScrabbleGame:
@@ -145,19 +154,19 @@ class ScrabbleGame:
     def __init__(self):
         self.board = Board()
         self.players = [Player(), Player(), Player(), Player()]
+        self.player_index = random.randint(0, 3)
         self.x = 0
 
     def draw(self):
-        # Some code
-        self.x = 0
+        self.players[self.player_index].draw_letters()
 
     def get_touch(self):
-        # Some code
-        self.x = 0
+        self.players[self.player_index].get_touch()
 
     def validate_touch(self):
         # Some code
         self.x = 0
+
 
 # # # # # # # # # TESTING CODE START # # # # # # # # #
 b = Board()
