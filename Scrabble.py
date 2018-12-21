@@ -2,6 +2,7 @@ import pygame
 import random
 import time
 
+
 def read_words():
     to_return = []
     file_object = open("words", "r")
@@ -29,9 +30,11 @@ game_display.fill(white)
 pygame.display.update()
 game_exit = False
 
+
 def text_objects(text, font):
     text_surface = font.render(text, True, black)
     return text_surface, text_surface.get_rect()
+
 
 def message_display(text):
     large_text = pygame.font.Font('freesansbold.ttf', 75)
@@ -43,6 +46,7 @@ def message_display(text):
     time.sleep(5)
     game_display.fill(white)
     pygame.display.update()
+
 
 message_display("you got scrabbled")
 while not game_exit:
