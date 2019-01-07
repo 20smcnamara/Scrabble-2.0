@@ -21,6 +21,8 @@ white = (255, 255, 255)
 red = (255, 0, 0)
 light_blue = (33, 164, 215)
 light_green = (120, 223, 17)
+purple = (186, 85, 211)
+blue = (0, 0, 205)
 
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Scrabble')
@@ -185,6 +187,26 @@ message_display("you got scrabbled")
 for i in range(0, 750, 50):
     for y in range(0, 750, 50):
         pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
+for i in range(0, 750, 50):
+        pygame.draw.rect(game_display, purple, (i, i, 50, 50), 0)
+for i in range(0, 750, 50):
+        pygame.draw.rect(game_display, purple, (i, 700 - i, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (400, 400, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (300, 400, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (400, 300, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (300, 300, 50, 50), 0)
+
+pygame.draw.rect(game_display, blue, (450, 450, 50, 50), 0)
+pygame.draw.rect(game_display, blue, (250, 450, 50, 50), 0)
+pygame.draw.rect(game_display, blue, (450, 250, 50, 50), 0)
+pygame.draw.rect(game_display, blue, (250, 250, 50, 50), 0)
+
+pygame.draw.rect(game_display, red, (0, 0, 50, 50), 0)
+pygame.draw.rect(game_display, red, (700, 700, 50, 50), 0)
+pygame.draw.rect(game_display, red, (0, 700, 50, 50), 0)
+pygame.draw.rect(game_display, red, (700, 0, 50, 50), 0)
+
+
 pygame.display.update()
 
 
