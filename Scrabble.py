@@ -14,8 +14,8 @@ def read_words():
 
 pygame.init()
 
-display_width = 800
-display_height = 800
+display_width = 750
+display_height = 750
 black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
@@ -29,8 +29,7 @@ Clock.tick(60)
 game_display.fill(white)
 pygame.display.update()
 game_exit = False
-pygame.draw.rect(game_display, black, (0, 0, 50, 50), 2)
-pygame.display.update()
+
 
 def text_objects(text, font):
     text_surface = font.render(text, True, black)
@@ -44,12 +43,18 @@ def message_display(text):
     game_display.blit(text_surf, text_rect)
 
     pygame.display.update()
-    time.sleep(5)
+    time.sleep(2)
     game_display.fill(white)
     pygame.display.update()
 
 
 message_display("you got scrabbled")
+for i in range (0, 750, 50):
+    for y in range (0, 750, 50):
+        pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
+pygame.display.update()
+
+
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
