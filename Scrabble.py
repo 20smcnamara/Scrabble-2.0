@@ -48,19 +48,6 @@ def message_display(text):
     pygame.display.update()
 
 
-message_display("you got scrabbled")
-for i in range (0, 750, 50):
-    for y in range (0, 750, 50):
-        pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
-pygame.display.update()
-
-
-while not game_exit:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
@@ -199,4 +186,15 @@ class ScrabbleGame:
 
 b = Board()
 b.place_word("Sit", [14, 0], 0)
+message_display("you got scrabbled")
+for i in range(0, 750, 50):
+    for y in range(0, 750, 50):
+        pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
+pygame.display.update()
 
+
+while not game_exit:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
