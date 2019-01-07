@@ -44,11 +44,6 @@ def message_display(text):
     text_rect.center = ((display_width/2), (display_height/2))
     game_display.blit(text_surf, text_rect)
 
-    pygame.display.update()
-    time.sleep(2)
-    game_display.fill(white)
-    pygame.display.update()
-
 
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
