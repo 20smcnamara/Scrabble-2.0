@@ -44,7 +44,7 @@ def message_display(text):
     text_rect.center = ((display_width/2), (display_height/2))
     game_display.blit(text_surf, text_rect)
 
-
+BONUS_COLORS = ["White", "purple", "light blue", ]
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
@@ -52,7 +52,7 @@ LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
 directions = [[1, 0], [0, 1]]
 words = read_words()
 # The below board matches with a picture at
-# https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiukpWtt6ffAhXtlOAKHRfzAWkQjRx6BAgBEAU&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FScrabble&psig=AOvVaw20SSGA8_KK0jKP66a4O2It&ust=1545155611561682
+# https://en.wikipedia.org/wiki/Scrabble
 #                      A  B  C  D  E  F  G  H  I  J  K  L  M  N  O
 BOARD_TILE_BONUSES = [[3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
                       [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 2
