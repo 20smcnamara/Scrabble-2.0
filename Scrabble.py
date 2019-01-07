@@ -211,6 +211,15 @@ pygame.draw.rect(game_display, red, (700, 700, 50, 50), 0)
 pygame.draw.rect(game_display, red, (0, 700, 50, 50), 0)
 pygame.draw.rect(game_display, red, (700, 0, 50, 50), 0)
 
+pygame.draw.rect(game_display, red, (0, 350, 50, 50), 0)
+pygame.draw.rect(game_display, red, (350, 0, 50, 50), 0)
+pygame.draw.rect(game_display, red, (700, 350, 50, 50), 0)
+pygame.draw.rect(game_display, red, (350, 700, 50, 50), 0)
+
+pygame.draw.rect(game_display, light_blue, (150, 0, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (150, 700, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (500, 0, 50, 50), 0)
+pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
 
 pygame.display.update()
 
