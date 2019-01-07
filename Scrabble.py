@@ -194,4 +194,5 @@ class ScrabbleGame:
 # # # # # # # # # TESTING CODE START # # # # # # # # #
 b = Board()
 b.place_word("Sit", [14, 0], 0)
-print(b.to_string_strs())
+
+while True:
