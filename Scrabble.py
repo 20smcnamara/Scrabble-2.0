@@ -29,7 +29,8 @@ Clock.tick(60)
 game_display.fill(white)
 pygame.display.update()
 game_exit = False
-
+pygame.draw.rect(game_display, black, (0, 0, 50, 50), 2)
+pygame.display.update()
 
 def text_objects(text, font):
     text_surface = font.render(text, True, black)
