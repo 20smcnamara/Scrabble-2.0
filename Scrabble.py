@@ -44,6 +44,7 @@ def message_display(text):
     text_rect.center = ((display_width/2), (display_height/2))
     game_display.blit(text_surf, text_rect)
 
+
 BONUS_COLORS = ["White", "purple", "light blue", ]
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
@@ -100,7 +101,7 @@ class Board:
             self.board.append([])
             for row in range(15):
                 self.board.append([])
-                self.board[row].append(Tile([row, col],
+                self.board[row].append(Tile([row * 15 / length_board, col * 15 / length_board],
                                             BOARD_TILE_BONUSES[row][col]))
 
     def place_word(self, string, first_letter_cords, direction):
