@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 
 
 def read_words():
@@ -91,6 +90,9 @@ class Tile:
         self.letter = letter
         self.in_use = True
         return self.bonus
+
+    def draw(self, color):
+        pygame.draw.rect(game_display, color, self.cords, 0)
 
 
 class Board:
@@ -215,7 +217,7 @@ for i in range(0, 750, 50):
 # pygame.draw.rect(game_display, light_blue, (150, 0, 50, 50), 0)
 # pygame.draw.rect(game_display, light_blue, (150, 700, 50, 50), 0)
 # pygame.draw.rect(game_display, light_blue, (500, 0, 50, 50), 0)
-#pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
 
 pygame.display.update()
 
