@@ -94,7 +94,7 @@ class Tile:
         return self.bonus
 
     def draw(self):
-        pygame.draw.rect(game_display, self.color, self.cords)
+        pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board, height_board))
 
     def get_bonus(self):
         return self.bonus
