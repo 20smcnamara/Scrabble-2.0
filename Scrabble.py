@@ -80,6 +80,7 @@ class Tile:
         self.str = BONUS_STRINGS[bonus]
         self.letter = ""
         self.in_use = False
+        self.color = BONUS_COLORS[bonus]
 
     def to_string(self):
         return self.str
@@ -92,8 +93,8 @@ class Tile:
         self.in_use = True
         return self.bonus
 
-    def draw(self, color, fill):
-        pygame.draw.rect(game_display, color, self.cords, fill)
+    def draw(self):
+        pygame.draw.rect(game_display, self.color, self.cords)
 
 
 class Board:
