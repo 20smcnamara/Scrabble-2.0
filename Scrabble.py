@@ -210,8 +210,9 @@ class ScrabbleGame:
         self.x = 0
 
     def create_new_deck(self):
-        for letter in TILE_AMOUNTS:
-            for
+        for letter in TILE_AMOUNTS.keys():
+            for x in range(TILE_AMOUNTS[letter]):
+                self.deck.append(letter)
 
     def refill(self):
         for player in self.players:
@@ -241,38 +242,6 @@ b.place_word("Sit", [14, 0], 0)
 message_display("you got scrabbled")
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
-for i in range(0, 750, 50):
-    for y in range(0, 750, 50):
-        pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
-# for i in range(0, 750, 50):
-#         pygame.draw.rect(game_display, purple, (i, i, 50, 50), 0)
-# for i in range(0, 750, 50):
-#         pygame.draw.rect(game_display, purple, (i, 700 - i, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (400, 400, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (300, 400, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (400, 300, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (300, 300, 50, 50), 0)
-#
-# pygame.draw.rect(game_display, blue, (450, 450, 50, 50), 0)
-# pygame.draw.rect(game_display, blue, (250, 450, 50, 50), 0)
-# pygame.draw.rect(game_display, blue, (450, 250, 50, 50), 0)
-# pygame.draw.rect(game_display, blue, (250, 250, 50, 50), 0)
-#
-# pygame.draw.rect(game_display, red, (0, 0, 50, 50), 0)
-# pygame.draw.rect(game_display, red, (700, 700, 50, 50), 0)
-# pygame.draw.rect(game_display, red, (0, 700, 50, 50), 0)
-# pygame.draw.rect(game_display, red, (700, 0, 50, 50), 0)
-#
-# pygame.draw.rect(game_display, red, (0, 350, 50, 50), 0)
-# pygame.draw.rect(game_display, red, (350, 0, 50, 50), 0)
-# pygame.draw.rect(game_display, red, (700, 350, 50, 50), 0)
-# pygame.draw.rect(game_display, red, (350, 700, 50, 50), 0)
-#
-# pygame.draw.rect(game_display, light_blue, (150, 0, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (150, 700, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (500, 0, 50, 50), 0)
-# pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
-
 pygame.display.update()
 while not game_exit:
     for event in pygame.event.get():
