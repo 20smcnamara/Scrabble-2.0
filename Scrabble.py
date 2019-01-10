@@ -247,10 +247,8 @@ class ScrabbleGame:
 b = Board()
 b.place_word("Sit", [14, 0], 0)
 message_display("you got scrabbled")
-<<<<<<< HEAD
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
-=======
 for i in range(0, 750, 50):
     for y in range(0, 750, 50):
         pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
@@ -284,9 +282,6 @@ for i in range(0, 750, 50):
 # pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
 
 pygame.display.update()
-
-
->>>>>>> d00a20a9182b81ffa5447ed15bc6b1677b39485d
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
