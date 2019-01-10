@@ -44,15 +44,16 @@ def message_display(text):
     game_display.blit(text_surf, text_rect)
 
 
-BONUS_COLORS = ["White", "purple", "light blue", ]
+TILE_AMOUNTS = {"A": 9, "B": 2, "C": 2, "D": 4, "E": 12, "F": 2, "G": 3, "H": 2, "I": 9, "J": 1, "K": 1, "L": 4, "M": 2,
+                "N": 6, "O": 8, "P": 2, "Q": 1, "R": 6, "S": 4, "T": 6, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1}
+BONUS_COLORS = [white, purple, light_blue, blue, red, black]
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
 #              Down    Right
 directions = [[1, 0], [0, 1]]
 words = read_words()
-# The below board matches with a picture at
-# https://en.wikipedia.org/wiki/Scrabble
+# The below board matches with a picture at https://en.wikipedia.org/wiki/Scrabble
 #                      A  B  C  D  E  F  G  H  I  J  K  L  M  N  O
 BOARD_TILE_BONUSES = [[3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
                       [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 2
@@ -107,7 +108,7 @@ class Board:
             for row in range(15):
                 Tile.draw()
                 self.board.append([])
-                self.board[row].append(Tile([row * 15 / length_board, col * 15 / length_board],
+                self.board[row].append(Tile([row * 15 / length_board, col * 15 / height_board],
                                             BOARD_TILE_BONUSES[row][col]))
 
     def place_word(self, string, first_letter_cords, direction):
@@ -154,13 +155,24 @@ class Board:
 
 class Player:
 
-    def __init__(self):
+    def __init__(self, mode=0):
         self.letters = []
         for x in range(7):
             self.letters.append(random.choice(LETTERS))
         self.x = 0
 
-    def get_touch(self):
+    def take_tiles(self, deck):
+        while len(self.letters) < 7:
+            if len(deck) > 0:
+                deck.pop(0)
+            else:
+                return False
+        return True
+
+
+class Human(Player):
+
+    def check_touch(self):
         # Some code
         self.x = 0
 
@@ -169,28 +181,66 @@ class Player:
         self.x = 0
 
 
+class Computer(Player):
+
+    def take_turn(self):
+        print("Beep Boop Code WIP")
+
+
 class ScrabbleGame:
 
     def __init__(self):
+        possible = [0, 0, 0, 1]
         self.board = Board()
-        self.players = [Player(), Player(), Player(), Player()]
+        random_order = [possible.pop(random.randint(0, 3)),
+                        possible.pop(random.randint(0, 2)),
+                        possible.pop(random.randint(0, 1)),
+                        possible.pop(0)]
+        self.players = []
+        for x in range(len(random_order)):
+            if random_order[x] == 1:
+                self.players.append(Human)
+                self.player_index = x
+            else:
+                self.players.append(Computer)
         self.player_index = random.randint(0, 3)
+        self.deck = []
+        self.create_new_deck()
+        self.shuffle()
         self.x = 0
 
-    def draw(self):
-        self.players[self.player_index].draw_letters()
+    def create_new_deck(self):
+        for letter in TILE_AMOUNTS:
+            for
 
-    def get_touch(self):
-        self.players[self.player_index].get_touch()
+    def refill(self):
+        for player in self.players:
+            while not player.take_tiles(self.deck):
+                self.create_new_deck()
+
+    def check_touch(self):
+        self.players[self.player_index].check_touch()
 
     def validate_touch(self):
         # Some code
         self.x = 0
 
+    def shuffle(self):
+        for x in range(len(self.deck)):
+            switching_one = random.randint(0, len(self.deck))
+            switching_two = random.randint(0, len(self.deck))
+            while switching_two == switching_one:
+                switching_one = random.randint(0, len(self.deck))
+            temp = self.deck[switching_two]
+            self.deck[switching_two] = self.deck[switching_one]
+            self.deck[switching_one] = temp
+
 
 b = Board()
 b.place_word("Sit", [14, 0], 0)
 message_display("you got scrabbled")
+length_board = display_width  # Will be updated when more info provided
+height_board = display_height  # Will be updated when more info provided
 for i in range(0, 750, 50):
     for y in range(0, 750, 50):
         pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
@@ -224,8 +274,6 @@ for i in range(0, 750, 50):
 # pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
 
 pygame.display.update()
-
-
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
