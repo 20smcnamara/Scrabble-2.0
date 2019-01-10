@@ -96,6 +96,9 @@ class Tile:
     def draw(self):
         pygame.draw.rect(game_display, self.color, self.cords)
 
+    def get_bonus(self):
+        return self.bonus
+
 
 class Board:
 
@@ -104,18 +107,6 @@ class Board:
         for col in range(15):
             self.board.append([])
             for row in range(15):
-                if Tile.bonus == 0:
-                    Tile.draw(black, 2)
-                if Tile.bonus == 1:
-                    Tile.draw(light_green, 0)
-                if Tile.bonus == 2:
-                    Tile.draw(light_blue, 0)
-                if Tile.bonus == 3:
-                    Tile.draw(blue, 0)
-                if Tile.bonus == 4:
-                    Tile.draw(red, 0)
-                if Tile.bonus == 5:
-                    Tile.draw(purple, 0)
                 self.board.append([])
                 self.board[row].append(Tile([row * 15 / length_board, col * 15 / height_board],
                                             BOARD_TILE_BONUSES[row][col]))
