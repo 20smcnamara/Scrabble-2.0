@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 
 
 def read_words():
@@ -93,6 +92,9 @@ class Tile:
         self.in_use = True
         return self.bonus
 
+    def draw(self, color, fill):
+        pygame.draw.rect(game_display, color, self.cords, fill)
+
 
 class Board:
 
@@ -101,6 +103,18 @@ class Board:
         for col in range(15):
             self.board.append([])
             for row in range(15):
+                if Tile.bonus == 0:
+                    Tile.draw(black, 2)
+                if Tile.bonus == 1:
+                    Tile.draw(light_green, 0)
+                if Tile.bonus == 2:
+                    Tile.draw(light_blue, 0)
+                if Tile.bonus == 3:
+                    Tile.draw(blue, 0)
+                if Tile.bonus == 4:
+                    Tile.draw(red, 0)
+                if Tile.bonus == 5:
+                    Tile.draw(purple, 0)
                 self.board.append([])
                 self.board[row].append(Tile([row * 15 / length_board, col * 15 / height_board],
                                             BOARD_TILE_BONUSES[row][col]))
@@ -233,8 +247,46 @@ class ScrabbleGame:
 b = Board()
 b.place_word("Sit", [14, 0], 0)
 message_display("you got scrabbled")
+<<<<<<< HEAD
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
+=======
+for i in range(0, 750, 50):
+    for y in range(0, 750, 50):
+        pygame.draw.rect(game_display, black, (i, y, 50, 50), 2)
+# for i in range(0, 750, 50):
+#         pygame.draw.rect(game_display, purple, (i, i, 50, 50), 0)
+# for i in range(0, 750, 50):
+#         pygame.draw.rect(game_display, purple, (i, 700 - i, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (400, 400, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (300, 400, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (400, 300, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (300, 300, 50, 50), 0)
+#
+# pygame.draw.rect(game_display, blue, (450, 450, 50, 50), 0)
+# pygame.draw.rect(game_display, blue, (250, 450, 50, 50), 0)
+# pygame.draw.rect(game_display, blue, (450, 250, 50, 50), 0)
+# pygame.draw.rect(game_display, blue, (250, 250, 50, 50), 0)
+#
+# pygame.draw.rect(game_display, red, (0, 0, 50, 50), 0)
+# pygame.draw.rect(game_display, red, (700, 700, 50, 50), 0)
+# pygame.draw.rect(game_display, red, (0, 700, 50, 50), 0)
+# pygame.draw.rect(game_display, red, (700, 0, 50, 50), 0)
+#
+# pygame.draw.rect(game_display, red, (0, 350, 50, 50), 0)
+# pygame.draw.rect(game_display, red, (350, 0, 50, 50), 0)
+# pygame.draw.rect(game_display, red, (700, 350, 50, 50), 0)
+# pygame.draw.rect(game_display, red, (350, 700, 50, 50), 0)
+#
+# pygame.draw.rect(game_display, light_blue, (150, 0, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (150, 700, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (500, 0, 50, 50), 0)
+# pygame.draw.rect(game_display, light_blue, (500, 700, 50, 50), 0)
+
+pygame.display.update()
+
+
+>>>>>>> d00a20a9182b81ffa5447ed15bc6b1677b39485d
 while not game_exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
