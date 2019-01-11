@@ -185,6 +185,7 @@ class Computer(Player):
 
     def take_turn(self):
         print("Beep Boop Code WIP")
+        self.x = 0
 
 
 class ScrabbleGame:
@@ -237,11 +238,10 @@ class ScrabbleGame:
             self.deck[switching_one] = temp
 
 
-b = Board()
-b.place_word("Sit", [14, 0], 0)
 message_display("you got scrabbled")
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
+b = Board()
 pygame.display.update()
 while not game_exit:
     for event in pygame.event.get():
