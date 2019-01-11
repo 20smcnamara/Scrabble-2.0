@@ -23,14 +23,6 @@ light_green = (120, 223, 17)
 purple = (186, 85, 211)
 blue = (0, 0, 205)
 
-game_display = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption('Scrabble')
-Clock = pygame.time.Clock()
-Clock.tick(60)
-game_display.fill(white)
-pygame.display.update()
-game_exit = False
-
 
 def text_objects(text, font):
     text_surface = font.render(text, True, black)
@@ -94,7 +86,7 @@ class Tile:
         return self.bonus
 
     def draw(self):
-        pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board, height_board))
+        pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15))
 
 
 
@@ -210,7 +202,7 @@ class ScrabbleGame:
         self.player_index = random.randint(0, 3)
         self.deck = []
         self.create_new_deck()
-        self.shuffle()
+        # self.shuffle()
         self.x = 0
 
     def create_new_deck(self):
@@ -240,13 +232,25 @@ class ScrabbleGame:
             self.deck[switching_two] = self.deck[switching_one]
             self.deck[switching_one] = temp
 
+    def draw(self):
+        self.board.sean_said_wrong()
 
+game_display = pygame.display.set_mode((display_width, display_height))
+pygame.display.set_caption('Scrabble')
+Clock = pygame.time.Clock()
+Clock.tick(60)
+game_display.fill(white)
+pygame.display.update()
+game_exit = False
 message_display("you got scrabbled")
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
 b = Board()
+s = ScrabbleGame()
 pygame.display.update()
 while not game_exit:
+    s.draw()
+    pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
