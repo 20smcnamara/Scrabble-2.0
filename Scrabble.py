@@ -151,7 +151,9 @@ class Board:
         return to_return
 
     def sean_said_wrong(self):
-        Tile.draw()
+        for each in self.board:
+            for x in each:
+                x.draw()
 
 
 class Player:
