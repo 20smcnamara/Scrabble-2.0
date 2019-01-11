@@ -96,8 +96,6 @@ class Tile:
     def draw(self):
         pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board, height_board))
 
-    def get_bonus(self):
-        return self.bonus
 
 
 class Board:
@@ -151,6 +149,11 @@ class Board:
                 to_return += row.letter
             to_return += "\n"
         return to_return
+
+    def sean_said_wrong(self):
+        for each in self.board:
+            for x in each:
+                x.draw()
 
 
 class Player:
