@@ -86,6 +86,7 @@ class Tile:
         return self.bonus
 
     def draw(self):
+        print(self.cords)
         pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15))
 
 
@@ -98,7 +99,7 @@ class Board:
             self.board.append([])
             for row in range(15):
                 self.board.append([])
-                self.board[row].append(Tile([row * 15 / length_board, col * 15 / height_board],
+                self.board[row].append(Tile([row * (length_board / 15), col * (length_board / 15)],
                                             BOARD_TILE_BONUSES[row][col]))
 
     def place_word(self, string, first_letter_cords, direction):
