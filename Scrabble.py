@@ -38,7 +38,7 @@ def message_display(text):
 
 TILE_AMOUNTS = {"A": 9, "B": 2, "C": 2, "D": 4, "E": 12, "F": 2, "G": 3, "H": 2, "I": 9, "J": 1, "K": 1, "L": 4, "M": 2,
                 "N": 6, "O": 8, "P": 2, "Q": 1, "R": 6, "S": 4, "T": 6, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1}
-BONUS_COLORS = [white, purple, light_blue, blue, red, black]
+BONUS_COLORS = [black, purple, light_blue, blue, red, black]
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
@@ -86,8 +86,10 @@ class Tile:
         return self.bonus
 
     def draw(self):
-        print(self.cords)
-        pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15))
+        if self.bonus == 0:
+            pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15), 2)
+        else:
+            pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15), 0)
 
 
 
@@ -244,6 +246,8 @@ game_display.fill(white)
 pygame.display.update()
 game_exit = False
 message_display("you got scrabbled")
+game_display.fill(white)
+pygame.display.update()
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
 b = Board()
