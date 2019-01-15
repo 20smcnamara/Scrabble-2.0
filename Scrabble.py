@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 
 def read_words():
@@ -245,9 +246,6 @@ Clock.tick(60)
 game_display.fill(white)
 pygame.display.update()
 game_exit = False
-message_display("you got scrabbled")
-game_display.fill(white)
-pygame.display.update()
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
 b = Board()
@@ -260,3 +258,7 @@ while not game_exit:
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
+
+    if pygame.mouse.get_pressed() == (1, 0, 0):
+        pos = pygame.mouse.get_pos()
+        print(pos)
