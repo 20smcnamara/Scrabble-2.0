@@ -15,7 +15,7 @@ def read_words():
 pygame.init()
 
 display_width = 750
-display_height = 750
+display_height = 800
 black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
@@ -23,7 +23,7 @@ light_blue = (33, 164, 215)
 light_green = (120, 223, 17)
 purple = (186, 85, 211)
 blue = (0, 0, 205)
-
+tan = (210, 180, 140)
 
 def text_objects(text, font):
     text_surface = font.render(text, True, black)
@@ -253,6 +253,9 @@ s = ScrabbleGame()
 pygame.display.update()
 while not game_exit:
     s.draw()
+    for i in range(0, 750, 50):
+        if i % 20 == 10:
+            pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
     pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
