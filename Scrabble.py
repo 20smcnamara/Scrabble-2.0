@@ -90,7 +90,6 @@ class Tile:
         pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15))
 
 
-
 class Board:
 
     def __init__(self):
@@ -151,7 +150,7 @@ class Board:
 
 class Player:
 
-    def __init__(self, mode=0):
+    def __init__(self, letters, mode=0):
         self.letters = []
         for x in range(7):
             self.letters.append(random.choice(LETTERS))
@@ -200,7 +199,7 @@ class ScrabbleGame:
                 self.player_index = x
             else:
                 self.players.append(Computer)
-        self.player_index = random.randint(0, 3)
+        self.refill()
         self.deck = []
         self.create_new_deck()
         # self.shuffle()
@@ -223,6 +222,12 @@ class ScrabbleGame:
         # Some code
         self.x = 0
 
+    def take_turns(self):
+        self.players[self.player_index].get_move()
+        for other in self.players:
+            if not other == self.players[self.player_index]:
+                other.take_turn()
+
     def shuffle(self):
         for x in range(len(self.deck)):
             switching_one = random.randint(0, len(self.deck))
@@ -235,6 +240,7 @@ class ScrabbleGame:
 
     def draw(self):
         self.board.sean_said_wrong()
+
 
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Scrabble')
