@@ -202,7 +202,7 @@ class ScrabbleGame:
                 self.player_index = x
             else:
                 self.players.append(Computer)
-        self.refill()
+        #        self.refill()
         self.deck = []
         self.create_new_deck()
         # self.shuffle()
@@ -213,10 +213,10 @@ class ScrabbleGame:
             for x in range(TILE_AMOUNTS[letter]):
                 self.deck.append(letter)
 
-    def refill(self):
-        for player in self.players:
-            while not player.take_tiles(self.deck):
-                self.create_new_deck()
+    # def refill(self):
+    #     for player in self.players:
+    #         while not player.take_tiles(self.deck):
+    #             self.create_new_deck()
 
     def check_touch(self):
         self.players[self.player_index].check_touch()
@@ -270,4 +270,11 @@ while not game_exit:
 
     if pygame.mouse.get_pressed() == (1, 0, 0):
         pos = pygame.mouse.get_pos()
-        print(pos)
+        x = pos[0]
+        y = pos[1]
+        while x % 50 != 0:
+            x -= 1
+        while y % 50 != 0:
+            y -= 1
+        pos_final = (x, y)
+        print(pos_final)
