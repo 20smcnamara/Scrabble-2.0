@@ -25,15 +25,16 @@ purple = (186, 85, 211)
 blue = (0, 0, 205)
 tan = (210, 180, 140)
 
+
 def text_objects(text, font):
     text_surface = font.render(text, True, black)
     return text_surface, text_surface.get_rect()
 
 
-def message_display(text):
+def message_display(text, a, b):
     large_text = pygame.font.Font('freesansbold.ttf', 75)
     text_surf, text_rect = text_objects(text, large_text)
-    text_rect.center = ((display_width/2), (display_height/2))
+    text_rect.center = (a, b)
     game_display.blit(text_surf, text_rect)
 
 
@@ -184,8 +185,8 @@ class Human(Player):
         self.x = 0
 
     def draw_letters(self):
-        # Some code
-        self.x = 0
+        for i in range(7):
+            message_display(self.letters[i], 750, i*50)
 
     def check_touch(self):
         # Some code
@@ -257,6 +258,7 @@ class ScrabbleGame:
             self.deck[switching_one] = temp
 
     def draw(self):
+        self.players[self.player_index].draw_letters()
         self.board.draw()
 
 
