@@ -12,7 +12,7 @@ def read_words():
 
 
 def fastest_search(letters):
-    mixes = find_all_mixes_perm(letters)
+    mixes = find_all_mixes_perm_but_better(letters)
     good = []
     for x in mixes:
         if x in words:
@@ -24,28 +24,7 @@ def fastest_search(letters):
             points += LETTER_VALUES[letter]
         if best[0] < points:
             best = [points, word]
-    return best[1]
-
-
-def find_all_mixes_perm(strings):
-    remade_string = ""
-    mixes = []
-    for letter in strings:
-        remade_string += letter
-    for x in range(len(strings) - 1):
-        for y in range(len(strings)):
-            new_strings = []
-            for i in range(x + 1):
-                new_strings.append(strings[:i] + strings[i + 1:])
-            newest_strings = []
-            for string in new_strings:
-                made_string = ""
-                for letter in string:
-                    made_string += letter
-                newest_strings.append(made_string)
-            for i in newest_strings:
-                mixes.append(set([''.join(p) for p in permutations(i)]))
-    return mixes
+    return sort_letters(best)
 
 
 words = read_words()
@@ -55,17 +34,44 @@ LETTER_VALUES = {"A": 1, "B": 3, "C": 3, "D": 2, "E": 1, "F": 4, "G": 2, "H": 4,
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
 init_time = time.time()
-# print(fastest_search(["A", "B", "C", "K"]))
-# print(find_all_mixes_perm(["A", "B", "C", "D"]))
 
-w = "Test"
-to_perm = []
-for num_skips in range(1, len(w)):
-    for skip_start_index in range(len(w)):
-        restart_index = skip_start_index + num_skips
-        start_index = 0
-        if restart_index == len(w):
-            start_index = restart_index - len(w)
-        to_perm.append(w[start_index:skip_start_index] + w[skip_start_index + num_skips:restart_index])
-        print(num_skips, ": ", start_index, "|", restart_index)  # w[start_index:skip_start_index] + "|" + w[skip_start_index + num_skips:restart_index])
-print(to_perm)
+
+def find_all_mixes_perm_but_better(strings):
+    remade_string = ""
+    uncollated_mixes = []
+    mixes = []
+    to_perm = []
+    for letter in strings:
+        remade_string += letter
+    for num_skips in range(1, len(remade_string) - 1):
+        for skip_start_index in range(len(remade_string) - 1):
+            restart_index = skip_start_index + num_skips
+            start_index = 0
+            if restart_index >= len(remade_string):
+                start_index = restart_index - len(remade_string)
+            print(remade_string[0:skip_start_index] + "|" + remade_string[skip_start_index +
+                                                                                    1:len(remade_string)])
+            to_perm.append(remade_string[start_index:skip_start_index] + remade_string[skip_start_index +
+                                                                                       num_skips:restart_index])
+    print(to_perm)
+    to_perm.append(remade_string)
+    for i in to_perm:
+        if len(i) > 1:
+            uncollated_mixes.append(set([''.join(p) for p in permutations(i)]))
+    for i in uncollated_mixes:
+        for x in i:
+            mixes.append(x)
+    return mixes
+
+
+print("\n", find_all_mixes_perm_but_better(["A", "B", "C"]))
+word = "ABCD"
+# print(word[0:2] + "|" + word[3:4])
+
+#   0,0     1,4
+#   0,1     2,4
+#   0,2     3,4
+#
+#
+#   0,0     1,3
+#   0,1     2,3
