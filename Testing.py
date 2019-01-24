@@ -65,6 +65,7 @@ def find_all_mixes_perm_but_better(strings):
 word = "ABCD"
 print(word[0:1] + "|" + word[2:4])
 
+
 # 1
 #   0
 #       0,1     1,3
