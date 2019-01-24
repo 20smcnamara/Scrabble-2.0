@@ -187,6 +187,7 @@ class Human(Player):
     def draw_letters(self):
         for i in range(7):
             message_display(self.letters[i], 750, i*50)
+            print (i)
 
     def check_touch(self):
         # Some code
