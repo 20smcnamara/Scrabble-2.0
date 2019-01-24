@@ -218,10 +218,7 @@ class ScrabbleGame:
                 self.player_index = x
             else:
                 self.players.append(Computer())
-        #        self.refill()
         self.deck = []
-        # self.create_new_deck()
-        # self.shuffle()
         self.refill()
         self.x = 0
 
