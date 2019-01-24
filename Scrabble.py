@@ -164,7 +164,7 @@ class Player:
     def take_tiles(self, deck):
         while len(self.letters) < 7:
             if len(deck) > 0:
-                deck.pop(0)
+                self.letters.append(deck.pop(0))
             else:
                 return True
         return False
@@ -227,13 +227,14 @@ class ScrabbleGame:
 
     def create_new_deck(self):
         for letter in TILE_AMOUNTS.keys():
-            for x in range(TILE_AMOUNTS[letter]):
+            for j in range(TILE_AMOUNTS[letter]):
                 self.deck.append(letter)
+        self.shuffle()
 
-    # def refill(self):
-    #     for player in self.players:
-    #         while not player.take_tiles(self.deck):
-    #             self.create_new_deck()
+    def refill(self):
+        for player in self.players:
+            while player.take_tiles(self.deck):
+                self.create_new_deck()
 
     def check_touch(self):
         self.players[self.player_index].check_touch()
@@ -250,10 +251,10 @@ class ScrabbleGame:
 
     def shuffle(self):
         for x in range(len(self.deck)):
-            switching_one = random.randint(0, len(self.deck))
-            switching_two = random.randint(0, len(self.deck))
+            switching_one = random.randint(0, len(self.deck) - 1)
+            switching_two = random.randint(0, len(self.deck) - 1)
             while switching_two == switching_one:
-                switching_one = random.randint(0, len(self.deck))
+                switching_one = random.randint(0, len(self.deck) - 1)
             temp = self.deck[switching_two]
             self.deck[switching_two] = self.deck[switching_one]
             self.deck[switching_one] = temp
@@ -273,6 +274,7 @@ length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
 b = Board()
 s = ScrabbleGame()
+print(s.players[s.player_index].letters)
 pygame.display.update()
 while not game_exit:
     s.draw()
