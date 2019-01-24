@@ -87,11 +87,16 @@ class Tile:
         self.in_use = True
         return self.bonus
 
+    def is_empty(self):
+        return self.letter == ""
+
     def draw(self):
         if self.bonus == 0:
-            pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15), 2)
+            pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15),
+                             2)
         else:
-            pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15), 0)
+            pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15),
+                             0)
 
 
 class Board:
@@ -114,7 +119,6 @@ class Board:
                 end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
                 if end_cords[1] < 0 or end_cords[1] == len(self.board) or \
                         end_cords[0] < 0 or end_cords[0] == len(self.board[0]):
-                    print(end_cords)
                     is_valid = False
                     break
                 tile = self.board[end_cords[0]][end_cords[1]]
@@ -146,7 +150,7 @@ class Board:
             to_return += "\n"
         return to_return
 
-    def sean_said_wrong(self):
+    def draw(self):
         for each in self.board:
             for x in each:
                 x.draw()
@@ -154,10 +158,8 @@ class Board:
 
 class Player:
 
-    def __init__(self, letters, mode=0):
+    def __init__(self, mode):
         self.letters = []
-        for x in range(7):
-            self.letters.append(random.choice(LETTERS))
         self.x = 0
 
     def take_tiles(self, deck):
@@ -165,11 +167,18 @@ class Player:
             if len(deck) > 0:
                 deck.pop(0)
             else:
-                return False
-        return True
+                return True
+        return False
+
+    def prove_existence(self):
+        self.x = 0
+        print("I am a real thing")
 
 
 class Human(Player):
+
+    def __init__(self, mode=0):
+        Player.__init__(self, mode)
 
     def check_touch(self):
         # Some code
@@ -179,8 +188,15 @@ class Human(Player):
         for i in range(7):
             message_display(self.letters[i], 750, i*50)
 
+    def check_touch(self):
+        # Some code
+        self.x = 0
+
 
 class Computer(Player):
+
+    def __init__(self, mode=0):
+        Player.__init__(self, mode)
 
     def take_turn(self):
         print("Beep Boop Code WIP")
@@ -199,14 +215,15 @@ class ScrabbleGame:
         self.players = []
         for x in range(len(random_order)):
             if random_order[x] == 1:
-                self.players.append(Human)
+                self.players.append(Human())
                 self.player_index = x
             else:
-                self.players.append(Computer)
+                self.players.append(Computer())
         #        self.refill()
         self.deck = []
-        self.create_new_deck()
+        # self.create_new_deck()
         # self.shuffle()
+        self.refill()
         self.x = 0
 
     def create_new_deck(self):
@@ -243,8 +260,8 @@ class ScrabbleGame:
             self.deck[switching_one] = temp
 
     def draw(self):
-        self.board.sean_said_wrong()
         self.players[self.player_index].draw_letters()
+        self.board.draw()
 
 
 game_display = pygame.display.set_mode((display_width, display_height))
