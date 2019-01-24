@@ -45,3 +45,47 @@ def find_all_mixes_perm_but_better(strings):
         remade_string += letter
     for num_skips in range(1, len(remade_string) - 1):
         for skip_start_index in range(len(remade_string) - 1):
+            for begin_index in range(num_skips):
+                print(remade_string[begin_index:skip_start_index] + "|" + remade_string[skip_start_index +
+                                                                                        1:len(remade_string)])
+                # to_perm.append(remade_string[0:skip_start_index] + remade_string[skip_start_index +
+                #                                                                       1:len(remade_string)])
+    print(to_perm)
+    to_perm.append(remade_string)
+    for i in to_perm:
+        if len(i) > 1:
+            uncollated_mixes.append(set([''.join(p) for p in permutations(i)]))
+    for i in uncollated_mixes:
+        for x in i:
+            mixes.append(x)
+    return mixes
+
+
+#print("\n", find_all_mixes_perm_but_better(["A", "B", "C", "D"]))
+word = "ABCD"
+print(word[0:1] + "|" + word[2:4])
+
+# 1
+#   0
+#       0,1     1,3
+#       0,1     2,4
+#   1
+#       1,2     2,4
+
+# 2
+#   0
+#       0,1     1,2
+#       0,1     2,3
+#       0,1     3,4
+#   1
+#       1,2     2,3
+#       1,2     3,4
+#   2
+#       2,3     3,4
+
+for num_skip in range(1, len(word) - 1):
+    for start_index in range(num_skip + 2):
+        for end_index in range(start_index + 1, len(word) - 1):
+            print(start_index, end_index)
+            print(word[start_index:start_index + 1] + "|" + word[end_index: end_index + len(word) - 2 + num_skip])
+    print("")
