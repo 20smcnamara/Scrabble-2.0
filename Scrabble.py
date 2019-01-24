@@ -31,8 +31,8 @@ def text_objects(text, font):
     return text_surface, text_surface.get_rect()
 
 
-def message_display(text, a, b):
-    large_text = pygame.font.Font('freesansbold.ttf', 75)
+def message_display(text, a, b, Size):
+    large_text = pygame.font.Font('freesansbold.ttf', Size)
     text_surf, text_rect = text_objects(text, large_text)
     text_rect.center = (a, b)
     game_display.blit(text_surf, text_rect)
@@ -186,8 +186,9 @@ class Human(Player):
 
     def draw_letters(self):
         for i in range(7):
-            message_display(self.letters[i], 750, i*50)
-            print (i)
+            x = i*100
+            message_display(self.letters[i], x+75, 775, 40)
+
 
     def check_touch(self):
         # Some code
@@ -259,8 +260,8 @@ class ScrabbleGame:
             self.deck[switching_one] = temp
 
     def draw(self):
-        self.players[self.player_index].draw_letters()
         self.board.draw()
+        self.players[self.player_index].draw_letters()
 
 
 game_display = pygame.display.set_mode((display_width, display_height))
@@ -277,10 +278,10 @@ s = ScrabbleGame()
 print(s.players[s.player_index].letters)
 pygame.display.update()
 while not game_exit:
-    s.draw()
     for i in range(0, 750, 50):
         if i % 20 == 10:
             pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
+    s.draw()
     pygame.display.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
