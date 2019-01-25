@@ -94,9 +94,11 @@ class Tile:
         if self.bonus == 0:
             pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15),
                              2)
+            message_display(self.letter, self.cords[0], self.cords[1], 40)
         else:
             pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15),
                              0)
+            message_display(self.letter, self.cords[0], self.cords[1], 40)
 
 
 class Board:
@@ -274,10 +276,6 @@ while not game_exit:
             pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
     s.draw()
     pygame.display.update()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
 
     if pygame.mouse.get_pressed() == (1, 0, 0):
         pos = pygame.mouse.get_pos()
@@ -289,3 +287,9 @@ while not game_exit:
             y -= 1
         pos_final = (x, y)
         print(pos_final)
+
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
