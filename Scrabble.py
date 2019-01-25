@@ -180,18 +180,10 @@ class Human(Player):
     def __init__(self, mode=0):
         Player.__init__(self, mode)
 
-    def check_touch(self):
-        # Some code
-        self.x = 0
-
     def draw_letters(self):
         for i in range(7):
             message_display(self.letters[i], 750, i*50)
-            print (i)
-
-    def check_touch(self):
-        # Some code
-        self.x = 0
+            print(i)
 
 
 class Computer(Player):

@@ -63,8 +63,7 @@ def find_all_mixes_perm_but_better(strings):
 
 #print("\n", find_all_mixes_perm_but_better(["A", "B", "C", "D"]))
 word = "ABCD"
-print(word[0:1] + "|" + word[2:4])
-
+#print(word[0:1] + "|" + word[1:3] + "\n")
 
 # 1
 #   0
@@ -85,8 +84,8 @@ print(word[0:1] + "|" + word[2:4])
 #       2,3     3,4
 
 for num_skip in range(1, len(word) - 1):
-    for start_index in range(num_skip + 2):
+    for start_index in range(len(word) - num_skip + 1):
         for end_index in range(start_index + 1, len(word) - 1):
-            print(start_index, end_index)
-            print(word[start_index:start_index + 1] + "|" + word[end_index: end_index + len(word) - 2 + num_skip])
-    print("")
+            print(1, word[start_index:start_index + 1] + word[end_index: end_index + len(word) - 1 - num_skip])
+        print("\n", 2, word[start_index:start_index + 1])
+    print("\n-\n")
