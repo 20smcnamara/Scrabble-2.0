@@ -13,7 +13,6 @@ def read_words():
 
 
 pygame.init()
-
 display_width = 750
 display_height = 800
 black = (0, 0, 0)
@@ -77,6 +76,34 @@ BOARD_TILE_BONUSES = [[3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
                       [0, 0, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0],    # 13
                       [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 14
                       [3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3]]    # 15
+
+
+class Deck:
+
+    def __init__(self):
+        self.letters = []
+
+    def create_new_deck(self):
+        for letter in TILE_AMOUNTS.keys():
+            for j in range(TILE_AMOUNTS[letter]):
+                self.letters.append(letter)
+        self.shuffle()
+
+    def shuffle(self):
+        for x in range(len(self.letters)):
+            switching_one = random.randint(0, len(self.letters) - 1)
+            switching_two = random.randint(0, len(self.letters) - 1)
+            while switching_two == switching_one:
+                switching_one = random.randint(0, len(self.letters) - 1)
+            temp = self.letters[switching_two]
+            self.letters[switching_two] = self.letters[switching_one]
+            self.letters[switching_one] = temp
+
+    def reveal_letters(self):
+        return self.letters
+
+    def take_tile(self):
+        return self.letters.pop()
 
 
 class Tile:
@@ -179,8 +206,8 @@ class Player:
 
     def take_tiles(self, deck):
         while len(self.letters) < 7:
-            if len(deck) > 0:
-                self.letters.append(deck.pop(0))
+            if len(deck.reveal_letters()) > 0:
+                self.letters.append(deck.take_tile())
             else:
                 return True
         return False
@@ -199,6 +226,14 @@ class Human(Player):
         for i in range(7):
             x = i*100
             message_display(self.letters[i], x+75, 775, 40)
+
+    def skip_turn(self, deck, letters_being_swapped):
+        for letter in letters_being_swapped:
+            deck.append(letter)
+        self.pick_new_letters()
+
+    def pick_new_letters(self):
+        self.x = 0
 
 
 class Computer(Player):
@@ -227,43 +262,34 @@ class ScrabbleGame:
                 self.player_index = x
             else:
                 self.players.append(Computer())
-        self.deck = []
+        self.deck = Deck()
         self.refill()
         self.x = 0
 
     def create_new_deck(self):
-        for letter in TILE_AMOUNTS.keys():
-            for j in range(TILE_AMOUNTS[letter]):
-                self.deck.append(letter)
-        self.shuffle()
+        self.deck.create_new_deck()
 
     def refill(self):
         for player in self.players:
             while player.take_tiles(self.deck):
                 self.create_new_deck()
 
-    def check_touch(self):
-        self.players[self.player_index].check_touch()
-
     def validate_touch(self):
         # Some code
         self.x = 0
 
     def take_turns(self):
-        self.players[self.player_index].get_move()
+        player_move = self.players[self.player_index].get_move()
+        if len(player_move) > 0:
+            self.players[self.player_index].skip_turn(self.deck.reveal_letters(), player_move)
+            self.shuffle()
+            self.refill()
         for other in self.players:
             if not other == self.players[self.player_index]:
                 other.take_turn()
 
     def shuffle(self):
-        for x in range(len(self.deck)):
-            switching_one = random.randint(0, len(self.deck) - 1)
-            switching_two = random.randint(0, len(self.deck) - 1)
-            while switching_two == switching_one:
-                switching_one = random.randint(0, len(self.deck) - 1)
-            temp = self.deck[switching_two]
-            self.deck[switching_two] = self.deck[switching_one]
-            self.deck[switching_one] = temp
+        self.deck.shuffle()
 
     def draw(self):
         self.board.draw()
@@ -280,18 +306,17 @@ game_exit = False
 length_board = display_width  # Will be updated when more info provided
 height_board = display_height  # Will be updated when more info provided
 b = Board()
-s = ScrabbleGame()
-print(s.players[s.player_index].letters)
+scrabbleGame = ScrabbleGame()
+print(scrabbleGame.players[scrabbleGame.player_index].letters)
 pygame.display.update()
 while not game_exit:
     for i in range(0, 750, 50):
         if i % 20 == 10:
             pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
-    s.draw()
+    scrabbleGame.draw()
     pygame.display.update()
     skip = input("do you want to skip, yes or no? ")
     if skip == "no":
-
         b.place_word(letter, get_pos(), input("direction, down or right? "))
 #    else:
 
