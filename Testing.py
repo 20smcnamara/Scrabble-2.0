@@ -61,9 +61,9 @@ def find_all_mixes_perm_but_better(strings):
     return mixes
 
 
-#print("\n", find_all_mixes_perm_but_better(["A", "B", "C", "D"]))
+# print("\n", find_all_mixes_perm_but_better(["A", "B", "C", "D"]))
 word = "ABCD"
-#print(word[0:1] + "|" + word[1:3] + "\n")
+# print(word[0:1] + "|" + word[1:3] + "\n")
 
 # 1
 #   0
