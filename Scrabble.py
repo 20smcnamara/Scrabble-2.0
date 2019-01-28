@@ -314,7 +314,6 @@ while not game_exit:
         pos_final = (x_pos, y_pos)
         print(pos_final)
 
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
