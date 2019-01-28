@@ -38,6 +38,19 @@ def message_display(text, a, b, Size):
     game_display.blit(text_surf, text_rect)
 
 
+def get_pos():
+    if pygame.mouse.get_pressed() == (1, 0, 0):
+        pos = pygame.mouse.get_pos()
+        x = pos[0]
+        y = pos[1]
+        while x % 50 != 0:
+            x -= 1
+        while y % 50 != 0:
+            y -= 1
+        pos_final = (x, y)
+        return pos_final
+
+
 TILE_AMOUNTS = {"A": 9, "B": 2, "C": 2, "D": 4, "E": 12, "F": 2, "G": 3, "H": 2, "I": 9, "J": 1, "K": 1, "L": 4, "M": 2,
                 "N": 6, "O": 8, "P": 2, "Q": 1, "R": 6, "S": 4, "T": 6, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1}
 BONUS_COLORS = [black, purple, light_blue, blue, red, black]
@@ -94,11 +107,11 @@ class Tile:
         if self.bonus == 0:
             pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15),
                              2)
-            message_display(self.letter, self.cords[0], self.cords[1], 40)
+            message_display(self.letter, self.cords[0], self.cords[1]+25, 40)
         else:
             pygame.draw.rect(game_display, self.color, (self.cords[0], self.cords[1], length_board/15, height_board/15),
                              0)
-            message_display(self.letter, self.cords[0], self.cords[1], 40)
+            message_display(self.letter, self.cords[0], self.cords[1]+25, 40)
 
 
 class Board:
@@ -276,18 +289,11 @@ while not game_exit:
             pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
     s.draw()
     pygame.display.update()
+    skip = input("do you want to skip, yes or no? ")
+    if skip == "no":
 
-    if pygame.mouse.get_pressed() == (1, 0, 0):
-        pos = pygame.mouse.get_pos()
-        x = pos[0]
-        y = pos[1]
-        while x % 50 != 0:
-            x -= 1
-        while y % 50 != 0:
-            y -= 1
-        pos_final = (x, y)
-        print(pos_final)
-
+        b.place_word(letter, get_pos(), input("direction, down or right? "))
+#    else:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
