@@ -23,6 +23,8 @@ light_green = (120, 223, 17)
 purple = (186, 85, 211)
 blue = (0, 0, 205)
 tan = (210, 180, 140)
+#global cords_letters
+#cords_letters = {}
 
 
 def text_objects(text, font):
@@ -38,16 +40,17 @@ def message_display(text, a, b, Size):
 
 
 def get_pos():
-    if pygame.mouse.get_pressed() == (1, 0, 0):
-        pos = pygame.mouse.get_pos()
-        x = pos[0]
-        y = pos[1]
-        while x % 50 != 0:
-            x -= 1
-        while y % 50 != 0:
-            y -= 1
-        pos_final = (x, y)
-        return pos_final
+    while pygame.mouse.get_pressed() != (1, 0, 0):
+        if pygame.mouse.get_pressed() == (1, 0, 0):
+            pos = pygame.mouse.get_pos()
+            x = pos[0]
+            y = pos[1]
+            while x % 50 != 0:
+                x -= 1
+            while y % 50 != 0:
+                y -= 1
+            pos_final = (x, y)
+            return pos_final
 
 
 TILE_AMOUNTS = {"A": 9, "B": 2, "C": 2, "D": 4, "E": 12, "F": 2, "G": 3, "H": 2, "I": 9, "J": 1, "K": 1, "L": 4, "M": 2,
@@ -216,6 +219,9 @@ class Player:
         self.x = 0
         print("I am a real thing")
 
+    def get_cords_letter(self):
+        return self.cords_letters
+
 
 class Human(Player):
 
@@ -226,6 +232,7 @@ class Human(Player):
         for i in range(7):
             x = i*100
             message_display(self.letters[i], x+75, 775, 40)
+#            cords_letters[(x+50, 750)] = self.letters[i]
 
     def skip_turn(self, deck, letters_being_swapped):
         for letter in letters_being_swapped:
@@ -309,15 +316,16 @@ b = Board()
 scrabbleGame = ScrabbleGame()
 print(scrabbleGame.players[scrabbleGame.player_index].letters)
 pygame.display.update()
+for i in range(0, 750, 50):
+    if i % 20 == 10:
+        pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
 while not game_exit:
-    for i in range(0, 750, 50):
-        if i % 20 == 10:
-            pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
     scrabbleGame.draw()
     pygame.display.update()
     skip = input("do you want to skip, yes or no? ")
     if skip == "no":
-        b.place_word(letter, get_pos(), input("direction, down or right? "))
+        b.place_word(input("what word do you spell? "), input("where do you want the word, in (x, y)? "), input(
+            "direction, down or right? "))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
