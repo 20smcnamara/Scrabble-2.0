@@ -319,13 +319,14 @@ pygame.display.update()
 for i in range(0, 750, 50):
     if i % 20 == 10:
         pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
+scrabbleGame.draw()
 while not game_exit:
-    scrabbleGame.draw()
     pygame.display.update()
     skip = input("do you want to skip, yes or no? ")
     if skip == "no":
-        b.place_word(input("what word do you spell? "), input("where do you want the word, in (x, y)? "), input(
-            "direction, down or right? "))
+        b.place_word(input("what word do you spell? "), (int(input("where do you want the work X coordinate? ")) - 1,
+                                                         int(input("where do you want the work y coordinate? ")) - 1),
+                     int(input("direction, down(0) or right?(1) ")))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
