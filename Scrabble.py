@@ -327,7 +327,8 @@ while not game_exit:
         b.place_word(input("what word do you spell? "), (int(input("where do you want the work X coordinate? ")) - 1,
                                                          int(input("where do you want the work y coordinate? ")) - 1),
                      int(input("direction, down(0) or right?(1) ")))
-
+    elif skip == "yes":
+        Human.skip_turn()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
