@@ -217,8 +217,7 @@ class Board:
                     is_valid = False
                     break
             if is_valid:
-                end_cords = first_letter_cords.copy()
-                end_cords = [end_cords[1], end_cords[0]]
+                end_cords = [first_letter_cords[1], first_letter_cords[0]]
                 for s in string:
                     self.board[end_cords[0]][end_cords[1]].place_letter(s.lower())
                     end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
