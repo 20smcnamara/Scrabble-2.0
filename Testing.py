@@ -1,5 +1,6 @@
 import time
-from itertools import permutations
+import pygame
+import random
 
 
 def read_words():
@@ -11,81 +12,167 @@ def read_words():
     return to_return
 
 
-def fastest_search(letters):
-    mixes = find_all_mixes_perm_but_better(letters)
-    good = []
-    for x in mixes:
-        if x in words:
-            good.append(x)
-    best = [0, "-1"]
-    for word in good:
-        points = 0
-        for letter in word:
-            points += LETTER_VALUES[letter]
-        if best[0] < points:
-            best = [points, word]
-    return sort_letters(best)
+class Board:
+
+    def __init__(self):
+        self.board = []
+        for col in range(15):
+            self.board.append([])
+            for row in range(15):
+                self.board.append([])
+                self.board[row].append(Tile([row * (length_board / 15), col * (length_board / 15)],
+                                            BOARD_TILE_BONUSES[row][col]))
+
+    def place_word(self, string, first_letter_cords, direction):
+        is_valid = True
+        if string in words:
+            end_cords = first_letter_cords.copy()
+            end_cords = [end_cords[1], end_cords[0]]
+            for x in range(len(string)):
+
+                end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
+                if end_cords[1] < 0 or end_cords[1] == len(self.board) or \
+                        end_cords[0] < 0 or end_cords[0] == len(self.board[0]):
+                    is_valid = False
+                    break
+                tile = self.board[end_cords[0]][end_cords[1]]
+                if not tile.letter == "":
+                    is_valid = False
+                    break
+            if is_valid:
+                end_cords = first_letter_cords.copy()
+                end_cords = [end_cords[1], end_cords[0]]
+                for s in string:
+                    self.board[end_cords[0]][end_cords[1]].place_letter(s.upper())
+                    end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
+        else:
+            is_valid = False
+        print(self.to_string_strs())
+        return is_valid
+
+    def to_string_bonuses(self):
+        to_return = ""
+        for col in self.board:
+            for row in col:
+                to_return += str(row.bonus) + ", "
+            to_return += "\n"
+        return to_return
+
+    def to_string_strs(self):
+        to_return = ""
+        for col in self.board:
+            for row in col:
+                if row.letter != "":
+                    to_return += row.letter
+                else:
+                    to_return += "-"
+            to_return += "\n"
+        return to_return
+
+    def draw(self):
+        for each in self.board:
+            for x in each:
+                x.draw()
+
+    def find_words(self):
+        for col in self.board:
+            for tile in col:
+                print(tile.letter)
 
 
+class Deck:
+
+    def __init__(self):
+        self.letters = []
+
+    def create_new_deck(self):
+        for letter in TILE_AMOUNTS.keys():
+            for j in range(TILE_AMOUNTS[letter]):
+                self.letters.append(letter)
+        self.shuffle()
+
+    def shuffle(self):
+        for x in range(len(self.letters)):
+            switching_one = random.randint(0, len(self.letters) - 1)
+            switching_two = random.randint(0, len(self.letters) - 1)
+            while switching_two == switching_one:
+                switching_one = random.randint(0, len(self.letters) - 1)
+            temp = self.letters[switching_two]
+            self.letters[switching_two] = self.letters[switching_one]
+            self.letters[switching_one] = temp
+
+    def reveal_letters(self):
+        return self.letters
+
+    def take_tile(self):
+        return self.letters.pop()
+
+
+class Tile:
+
+    def __init__(self, cords, bonus=0):
+        self.cords = cords
+        self.bonus = bonus
+        self.str = BONUS_STRINGS[bonus]
+        self.letter = ""
+        self.in_use = False
+        self.color = BONUS_COLORS[bonus]
+
+    def to_string(self):
+        return self.str
+
+    def place_letter(self, letter):
+        if self.in_use:
+            return -1
+        self.str = letter
+        self.letter = letter
+        self.in_use = True
+        return self.bonus
+
+    def is_empty(self):
+        return self.letter == ""
+
+
+#              Down    Right
+directions = [[1, 0], [0, 1]]
+display_width = 750
+display_height = 800
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+light_blue = (33, 164, 215)
+light_green = (120, 223, 17)
+purple = (186, 85, 211)
+blue = (0, 0, 205)
+tan = (210, 180, 140)
+BONUS_COLORS = [black, purple, light_blue, blue, red, black]
+length_board = display_width  # Will be updated when more info provided
+height_board = display_height  # Will be updated when more info provided
+BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 words = read_words()
 LETTER_VALUES = {"A": 1, "B": 3, "C": 3, "D": 2, "E": 1, "F": 4, "G": 2, "H": 4, "I": 1, "J": 8, "K": 5, "L": 1, "M": 3,
                  "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4,
                  "Z": 10}
+TILE_AMOUNTS = {"A": 9, "B": 2, "C": 2, "D": 4, "E": 12, "F": 2, "G": 3, "H": 2, "I": 9, "J": 1, "K": 1, "L": 4, "M": 2,
+                "N": 6, "O": 8, "P": 2, "Q": 1, "R": 6, "S": 4, "T": 6, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1}
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
+BOARD_TILE_BONUSES = [[3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
+                      [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 2
+                      [0, 0, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0],    # 3
+                      [2, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 2],    # 4
+                      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],    # 5
+                      [0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0],    # 6
+                      [0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0],    # 7
+                      [3, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 3],    # 8
+                      [0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0],    # 9
+                      [0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0],    # 10
+                      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],    # 11
+                      [2, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 2],    # 12
+                      [0, 0, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0],    # 13
+                      [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 14
+                      [3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3]]    # 15
 init_time = time.time()
-
-
-def find_all_mixes_perm_but_better(strings):
-    remade_string = ""
-    uncollated_mixes = []
-    mixes = []
-    to_perm = []
-    for letter in strings:
-        remade_string += letter
-    for num_skips in range(1, len(remade_string) - 1):
-        for skip_start_index in range(len(remade_string) - 1):
-            for begin_index in range(num_skips):
-                print(remade_string[begin_index:skip_start_index] + "|" + remade_string[skip_start_index +
-                                                                                        1:len(remade_string)])
-                # to_perm.append(remade_string[0:skip_start_index] + remade_string[skip_start_index +
-                #                                                                       1:len(remade_string)])
-    print(to_perm)
-    to_perm.append(remade_string)
-    for i in to_perm:
-        if len(i) > 1:
-            uncollated_mixes.append(set([''.join(p) for p in permutations(i)]))
-    for i in uncollated_mixes:
-        for x in i:
-            mixes.append(x)
-    return mixes
-
-
-# print("\n", find_all_mixes_perm_but_better(["A", "B", "C", "D"]))
-word = "ABCD"
-# print(word[0:1] + "|" + word[1:3] + "\n")
-
-# 1
-#   0
-#       0,1     1,3
-#       0,1     2,4
-#   1
-#       1,2     2,4
-
-# 2
-#   0
-#       0,1     1,2
-#       0,1     2,3
-#       0,1     3,4
-#   1
-#       1,2     2,3
-#       1,2     3,4
-#   2
-#       2,3     3,4
-
-for num_skip in range(1, len(word) - 1):
-    for start_index in range(len(word) - num_skip + 1):
-        for end_index in range(start_index + 1, len(word) - 1):
-            print(1, word[start_index:start_index + 1] + word[end_index: end_index + len(word) - 1 - num_skip])
-        print("\n", 2, word[start_index:start_index + 1])
-    print("\n-\n")
+b = Board()
+print(b.place_word("SOAP", [1, 0], 1))
+#b.find_words()
