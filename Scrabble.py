@@ -204,8 +204,7 @@ class Board:
         string = string.upper()
         is_valid = True
         if string in words:
-            end_cords = first_letter_cords.copy()
-            end_cords = [end_cords[1], end_cords[0]]
+            end_cords = [first_letter_cords[1], first_letter_cords[0]]
             for x in range(len(string) - 1):
 
                 end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
