@@ -33,8 +33,8 @@ def text_objects(text, font):
     return text_surface, text_surface.get_rect()
 
 
-def message_display(text, a, b, Size):
-    large_text = pygame.font.Font('freesansbold.ttf', Size)
+def message_display(text, a, b, size):
+    large_text = pygame.font.Font('freesansbold.ttf', size)
     text_surf, text_rect = text_objects(text, large_text)
     text_rect.center = (a, b)
     game_display.blit(text_surf, text_rect)
@@ -226,6 +226,7 @@ class Board:
             is_valid = False
         return is_valid
 
+
     def to_string_bonuses(self):
         to_return = ""
         for col in self.board:
@@ -346,8 +347,13 @@ class ScrabbleGame:
         self.deck.shuffle()
 
     def draw(self):
+        game_display.fill(white)
+        for i in range(0, 750, 50):
+            if i % 20 == 10:
+                pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
         self.board.draw()
         self.players[self.player_index].draw_letters()
+        pygame.display.update()
 
 
 game_display = pygame.display.set_mode((display_width, display_height))
@@ -363,20 +369,43 @@ b = Board()
 scrabbleGame = ScrabbleGame()
 print(scrabbleGame.players[scrabbleGame.player_index].letters)
 pygame.display.update()
-for i in range(0, 750, 50):
-    if i % 20 == 10:
-        pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
 scrabbleGame.draw()
-while not game_exit:
-    pygame.display.update()
-    skip = input("do you want to skip, yes or no? ")
-    if skip == "no":
-        b.place_word(input("what word do you spell? "), (int(input("where do you want the work X coordinate? ")) - 1,
-                                                         int(input("where do you want the work y coordinate? ")) - 1),
-                     int(input("direction, down(0) or right?(1) ")))
-    elif skip == "yes":
-        Human.skip_turn()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
+
+
+def game_loop():
+    while not game_exit:
+        pygame.display.update()
+        skip = 0
+        message_display("do you want to skip, y or n?", 375, 325, 40)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_y:
+                    skip = True
+                if event.key == pygame.K_n:
+                    skip = False
+            game_display.fill(white)
+            scrabbleGame.draw()
+
+        if skip is False:
+            message_display("what word do you want to spell?", 375, 325, 40)
+            w = input("word? ")
+            scrabbleGame.draw()
+            message_display("X coordinate?", 375, 325, 40)
+            x = int(input("x? "))
+            scrabbleGame.draw()
+            message_display("y coordinate?", 375, 325, 40)
+            y = int(input("y? "))
+            scrabbleGame.draw()
+            message_display("Direction down(0) or right(1)?", 375, 325, 40)
+            d = int(input("direction? "))
+            b.place_word(w, ((x - 1), (y - 1)), d)
+
+        if skip is True:
+            Human.skip_turn()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+
+game_loop()
