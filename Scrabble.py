@@ -201,6 +201,7 @@ class Board:
                                             BOARD_TILE_BONUSES[row][col]))
 
     def place_word(self, string, first_letter_cords, direction):
+        string = string.upper()
         is_valid = True
         if string in words:
             end_cords = first_letter_cords.copy()
