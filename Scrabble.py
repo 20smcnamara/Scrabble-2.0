@@ -179,7 +179,6 @@ class Board:
             is_valid = False
         return is_valid
 
-
     def to_string_bonuses(self):
         to_return = ""
         for col in self.board:
