@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from itertools import permutations
 
 
 def read_words():
@@ -59,6 +60,9 @@ BONUS_COLORS = [black, purple, light_blue, blue, red, black]
 BONUS_STRINGS = ["", "2x\nWS", "2x\nLS", "3x\nWS", "3x\nLS", "Mid"]
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
            "W", "X", "Y", "Z"]
+LETTER_VALUES = {"A": 1, "B": 3, "C": 3, "D": 2, "E": 1, "F": 4, "G": 2, "H": 4, "I": 1, "J": 8, "K": 5, "L": 1, "M": 3,
+                 "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4,
+                 "Z": 10}
 #              Down    Right
 directions = [[1, 0], [0, 1]]
 words = read_words()
@@ -79,6 +83,47 @@ BOARD_TILE_BONUSES = [[3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3],    # 1
                       [0, 0, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0],    # 13
                       [0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0],    # 14
                       [3, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 3]]    # 15
+
+
+def fastest_search(letters, starting_string=""):
+    mixes = perm(letters, starting_string)
+    print(mixes)
+    good = []
+    for x in mixes:
+        if len(x) > 1:
+            if x in words:
+                good.append(x)
+        # print(str(round(mixes.index(x) / len(mixes) * 100)) + "%")
+    to_return = []
+    for word in good:
+        points = 0
+        for letter in word:
+            points += LETTER_VALUES[letter]
+        to_return.append([word, points])
+    for word in range(len(to_return)):
+        for i in range(1, len(to_return)):
+            if to_return[i][1] > to_return[i - 1][1]:
+                temp = [to_return[i - 1][0], to_return[i - 1][1]]
+                to_return[i - 1] = to_return[i]
+                to_return[i] = temp
+    return to_return
+
+
+def perm(string, starting_string):
+    to_return = []
+    start = 2
+    if len(starting_string) > 0:
+        start = 1
+    for x in range(start, len(string)):
+        perms = (p for p in permutations(string, x))
+        for p in perms:
+            new_string_1 = starting_string + ''.join(p)
+            new_string_2 = ''.join(p) + starting_string
+            if new_string_1 not in to_return:
+                to_return.append(new_string_1)
+            if new_string_2 not in to_return:
+                to_return.append(new_string_2)
+    return to_return
 
 
 class Deck:
@@ -159,6 +204,7 @@ class Board:
         is_valid = True
         if string in words:
             end_cords = first_letter_cords.copy()
+            end_cords = [end_cords[1], end_cords[0]]
             for x in range(len(string)):
 
                 end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
@@ -172,6 +218,7 @@ class Board:
                     break
             if is_valid:
                 end_cords = first_letter_cords.copy()
+                end_cords = [end_cords[1], end_cords[0]]
                 for s in string:
                     self.board[end_cords[0]][end_cords[1]].place_letter(s.lower())
                     end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
