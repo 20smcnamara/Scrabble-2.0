@@ -205,7 +205,7 @@ class Board:
         if string in words:
             end_cords = first_letter_cords.copy()
             end_cords = [end_cords[1], end_cords[0]]
-            for x in range(len(string)):
+            for x in range(len(string) - 1):
 
                 end_cords = [end_cords[0] + directions[direction][0], end_cords[1] + directions[direction][1]]
                 if end_cords[1] < 0 or end_cords[1] == len(self.board) or \
