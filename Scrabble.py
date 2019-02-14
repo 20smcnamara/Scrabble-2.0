@@ -352,7 +352,6 @@ class ScrabbleGame:
                 pygame.draw.rect(game_display, tan, (i, 750, 50, 50), 0)
         self.board.draw()
         self.players[self.player_index].draw_letters()
-        pygame.display.update()
 
 
 game_display = pygame.display.set_mode((display_width, display_height))
@@ -387,16 +386,21 @@ def game_loop():
 
         if skip is False:
             message_display("what word do you want to spell?", 375, 325, 40)
+            pygame.display.update()
             w = input("word? ")
             scrabbleGame.draw()
             message_display("X coordinate?", 375, 325, 40)
+            pygame.display.update()
             x = int(input("x? "))
             scrabbleGame.draw()
             message_display("y coordinate?", 375, 325, 40)
+            pygame.display.update()
             y = int(input("y? "))
             scrabbleGame.draw()
             message_display("Direction down(0) or right(1)?", 375, 325, 40)
+            pygame.display.update()
             d = int(input("direction? "))
+            scrabbleGame.draw()
             b.place_word(w, ((x - 1), (y - 1)), d)
 
         if skip is True:
@@ -405,6 +409,7 @@ def game_loop():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+        pygame.display.update()
 
 
 game_loop()
