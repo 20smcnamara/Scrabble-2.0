@@ -400,7 +400,7 @@ def game_loop():
             pygame.display.update()
             d = int(input("direction? "))
             scrabbleGame.draw()
-            b.place_word(w, ((x - 1), (y - 1)), d)
+            print(b.place_word(w, ((x - 1), (y - 1)), d))
 
         if skip is True:
             Human.skip_turn()
